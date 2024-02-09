@@ -1,0 +1,39 @@
+@import "../../../variables.module.scss";
+
+.messageContainer {
+    width: 100%;
+    display: flex;
+}
+
+.message {
+    font-size: 1.5rem;
+    border-radius: 5px;
+    border-width: 2px;
+    border-style: solid;
+    padding: 4px 8px 4px 8px;
+    margin: 6px 8px 0px 8px;
+    word-wrap: break-word;
+    max-width: 50%;
+}
+
+.yourMessage {
+    background-color: $primary-color-background;
+    border-color: $primary-color;
+    margin-left: auto;
+}
+
+.partnerMessage {
+    background-color: $secondary-color-background;
+    border-color: $secondary-color;
+}
+
+.systemMessage {
+    background-color: gray;
+    border-color: black;
+}
+
+@media screen and (max-width: 860px) {
+    .message {
+        font-size: 1rem;
+    }
+}

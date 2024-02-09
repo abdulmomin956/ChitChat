@@ -1,0 +1,94 @@
+@import "../../variables.module.scss";
+
+.headerWrapper {
+    max-width: calc(60rem + 1rem * 2);
+    margin: 0 auto;
+    height: 70px;
+}
+
+.headerContainer {
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    display: flex;
+}
+
+.headerLogo {
+    align-items: center;
+    font-size: 2rem;
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.logoText {
+    font-family: 'Great Vibes', cursive;
+    margin-left: 0.6em;
+    font-weight: 500;
+    font-size: 3rem;
+    color: $primary-color;
+    flex: 50%;
+}
+
+.onlineText {
+    display: flow-root;
+    text-align: right;
+    flex: 50%;
+}
+
+.onlineIcon {
+    color: $primary-color;
+    font-size: 1.8rem;
+    margin-bottom: -2px;
+}
+
+.logoText:before {
+    content: "";
+    display: block;
+    height: 0;
+    width: 0;
+    margin-top: -0.2075em;
+}
+
+.logoText:after {
+    content: "";
+    display: block;
+    height: 0;
+    width: 0;
+    margin-bottom: -0.2075em;
+}
+
+.dropShadow {
+    box-shadow: $drop-shadow;
+}
+
+@media screen and (max-width: 860px) {
+    .onlineText {
+        display: none;
+    }
+
+    .logoImg {
+        flex-shrink: 0;
+        height: 1.1em;
+    }
+
+    .headerLogo {
+        margin-left: 25px;
+    }
+
+    .dropShadow {
+        display: none;
+    }
+
+    .headerWrapper {
+
+        height: 30px;
+    }
+
+    .headerContainer {
+        height: 30px;
+    }
+}
