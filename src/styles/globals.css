@@ -90,7 +90,7 @@ a {
 }
 
 body {
-  padding: 5%;
+  /* padding: 0 5%; */
   background-color: #F5F5F5;
 }
 
@@ -359,12 +359,13 @@ body {
 }
 
 .footer-chat {
-  width: calc(65% - 66px);
+  /* width: calc(65% - 66px); */
+  width: 53%;
   height: 80px;
   display: flex;
   align-items: center;
   position: absolute;
-  bottom: 0;
+  bottom: 0px;
   background-color: transparent;
   border-top: 2px solid #EEE;
 

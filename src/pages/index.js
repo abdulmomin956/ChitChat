@@ -6,12 +6,66 @@ import styles from '../styles/Index.module.css'
 import { useRouter } from "next/router";
 import dbConnect, { UserModel } from "../../db";
 import { returnUsername, verifyJWT } from "@/utils/verifyJWT";
-// import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
+import { useState } from "react";
 
 
 const Home = ({ isAuth, auth }) => {
   const socket = useSocket();
   const router = useRouter()
+  const [active, setActive] = useState(0)
+
+  const conversions = [
+    {
+      photo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+      name: "Megan Leib",
+      message: '9 pm at the bar if possible 😳',
+      timer: '12 sec',
+      online: true
+    },
+    {
+      photo: "https://i.pinimg.com/originals/a9/26/52/a926525d966c9479c18d3b4f8e64b434.jpg",
+      name: "Dave Corlew",
+      message: "Let's meet for a coffee or something today ?",
+      timer: '3 min',
+      online: true
+    },
+    {
+      photo: "https://images.unsplash.com/photo-1497551060073-4c5ab6435f12?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=667&q=80",
+      name: "Jerome Seiber",
+      message: "I&apos;ve sent you the annual report",
+      timer: '42 min',
+      online: false
+    },
+    {
+      photo: "https://card.thomasdaubenton.com/img/photo.jpg",
+      name: "Thomas Dbtn",
+      message: 'See you tomorrow ! 🙂',
+      timer: '2 hour',
+      online: true
+    },
+    {
+      photo: "https://images.unsplash.com/photo-1553514029-1318c9127859?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80",
+      name: "Elsie Amador",
+      message: 'What the f**k is going on ?',
+      timer: '1 day',
+      online: false
+    },
+    {
+      photo: "https://images.unsplash.com/photo-1541747157478-3222166cf342?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=967&q=80",
+      name: "Billy Southard",
+      message: 'Ahahah 😂',
+      timer: '4 days',
+      online: false
+    },
+    {
+      photo: "https://images.unsplash.com/photo-1435348773030-a1d74f568bc2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80",
+      name: "Paul Walker",
+      message: "You can&apos;t see me",
+      timer: '1 week',
+      online: true
+    }
+
+  ]
 
   const AuthDiv = <div className="container">
     <div className="row">
@@ -45,89 +99,31 @@ const Home = ({ isAuth, auth }) => {
             <input type="text" placeholder="Search..."></input>
           </div>
         </div>
-        <div className="discussion message-active">
-          <div className="photo" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80)" }}>
-            <div className="online"></div>
-          </div>
-          <div className="desc-contact">
-            <p className="name">Megan Leib</p>
-            <p className="message">9 pm at the bar if possible 😳</p>
-          </div>
-          <div className="timer">12 sec</div>
-        </div>
+        {
+          conversions.map((c, i) =>
+            <div onClick={() => setActive(i)} key={i} className={`discussion ${i === active ? 'message-active' : ''}`}>
+              <div className="photo" style={{ backgroundImage: "url(" + c.photo + ")" }}>
+                {c.online && <div className="online"></div>}
+              </div>
+              <div className="desc-contact">
+                <p className="name">{c.name}</p>
+                <p className="message">{c.message}</p>
+              </div>
+              <div className="timer">{c.timer}</div>
+            </div>
+          )
+        }
 
-        <div className="discussion">
-          <div className="photo" style={{ backgroundImage: "url(https://i.pinimg.com/originals/a9/26/52/a926525d966c9479c18d3b4f8e64b434.jpg);" }}>
-            <div className="online"></div>
-          </div>
-          <div className="desc-contact">
-            <p className="name">Dave Corlew</p>
-            <p className="message">Let&apos;s meet for a coffee or something today ?</p>
-          </div>
-          <div className="timer">3 min</div>
-        </div>
-
-        <div className="discussion">
-          <div className="photo" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1497551060073-4c5ab6435f12?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=667&q=80)" }}>
-          </div>
-          <div className="desc-contact">
-            <p className="name">Jerome Seiber</p>
-            <p className="message">I&apos;ve sent you the annual report</p>
-          </div>
-          <div className="timer">42 min</div>
-        </div>
-
-        <div className="discussion">
-          <div className="photo" style={{ backgroundImage: "url(https://card.thomasdaubenton.com/img/photo.jpg);" }}>
-            <div className="online"></div>
-          </div>
-          <div className="desc-contact">
-            <p className="name">Thomas Dbtn</p>
-            <p className="message">See you tomorrow ! 🙂</p>
-          </div>
-          <div className="timer">2 hour</div>
-        </div>
-
-        <div className="discussion">
-          <div className="photo" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1553514029-1318c9127859?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80)" }}>
-          </div>
-          <div className="desc-contact">
-            <p className="name">Elsie Amador</p>
-            <p className="message">What the f**k is going on ?</p>
-          </div>
-          <div className="timer">1 day</div>
-        </div>
-
-        <div className="discussion">
-          <div className="photo" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1541747157478-3222166cf342?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=967&q=80)" }}>
-          </div>
-          <div className="desc-contact">
-            <p className="name">Billy Southard</p>
-            <p className="message">Ahahah 😂</p>
-          </div>
-          <div className="timer">4 days</div>
-        </div>
-
-        <div className="discussion">
-          <div className="photo" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1435348773030-a1d74f568bc2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80)" }}>
-            <div className="online"></div>
-          </div>
-          <div className="desc-contact">
-            <p className="name">Paul Walker</p>
-            <p className="message">You can&apos;t see me</p>
-          </div>
-          <div className="timer">1 week</div>
-        </div>
       </section>
       <section className="chat">
         <div className="header-chat">
           <i className="icon fa fa-user-o" aria-hidden="true"></i>
-          <p className="name">Megan Leib</p>
+          <p className="name">{conversions.find((c, i) => i === active).name}</p>
           <i className="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>
         </div>
         <div className="messages-chat">
           <div className="message">
-            <div className="photo" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80)" }}>
+            <div className="photo" style={{ backgroundImage: "url(" + conversions.find((c, i) => i === active).photo + ")" }}>
               <div className="online"></div>
             </div>
             <p className="text"> Hi, how are you ? </p>
@@ -148,7 +144,7 @@ const Home = ({ isAuth, auth }) => {
           </div>
           <p className="response-time time"> 15h04</p>
           <div className="message">
-            <div className="photo" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80)" }}>
+            <div className="photo" style={{ backgroundImage: "url(" + conversions.find((c, i) => i === active).photo + ")" }}>
               <div className="online"></div>
             </div>
             <p className="text"> 9 pm at the bar if possible 😳</p>

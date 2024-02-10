@@ -1,3 +1,5 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'font-awesome/css/font-awesome.min.css'
 import "@/styles/globals.css";
 
 export default function App({ Component, pageProps }) {
