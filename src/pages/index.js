@@ -1,18 +1,27 @@
 // pages/index.js
 import Image from "next/image";
 import WebRTC from "../../WebRTC";
-import useSocket from "../../socket";
 import styles from '../styles/Index.module.css'
 import { useRouter } from "next/router";
 import dbConnect, { UserModel } from "../../db";
 import { returnUsername, verifyJWT } from "@/utils/verifyJWT";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { io } from "socket.io-client";
 
 
 const Home = ({ isAuth, auth }) => {
-  const socket = useSocket();
+  const socket = useRef()
   const router = useRouter()
   const [active, setActive] = useState(0)
+
+  useEffect(() => {
+    socket.current = io('/', {
+      path: '/api/socket',
+      query: `username=${auth.username}&name=${auth.name}`
+    })
+  }, [auth.name, auth.username])
+
+  console.log(auth);
 
   const conversions = [
     {
@@ -67,99 +76,80 @@ const Home = ({ isAuth, auth }) => {
 
   ]
 
-  const AuthDiv = <div className="container">
-    <div className="row">
-      <nav className="menu">
-        <ul className="items">
-          <li className="item">
-            <i className="fa fa-home" aria-hidden="true"></i>
-          </li>
-          <li className="item">
-            <i className="fa fa-user" aria-hidden="true"></i>
-          </li>
-          <li className="item">
-            <i className="fa fa-pencil" aria-hidden="true"></i>
-          </li>
-          <li className="item item-active">
-            <i className="fa fa-commenting" aria-hidden="true"></i>
-          </li>
-          <li className="item">
-            <i className="fa fa-file" aria-hidden="true"></i>
-          </li>
-          <li className="item">
-            <i className="fa fa-cog" aria-hidden="true"></i>
-          </li>
-        </ul>
-      </nav>
+  // const AuthDiv = <div className="container">
+  {/* <div className="row"> */ }
 
-      <section className="discussions">
-        <div className="discussion search">
-          <div className="searchbar">
-            <i className="fa fa-search" aria-hidden="true"></i>
-            <input type="text" placeholder="Search..."></input>
-          </div>
-        </div>
-        {
-          conversions.map((c, i) =>
-            <div onClick={() => setActive(i)} key={i} className={`discussion ${i === active ? 'message-active' : ''}`}>
-              <div className="photo" style={{ backgroundImage: "url(" + c.photo + ")" }}>
-                {c.online && <div className="online"></div>}
-              </div>
-              <div className="desc-contact">
-                <p className="name">{c.name}</p>
-                <p className="message">{c.message}</p>
-              </div>
-              <div className="timer">{c.timer}</div>
-            </div>
-          )
-        }
 
-      </section>
-      <section className="chat">
-        <div className="header-chat">
-          <i className="icon fa fa-user-o" aria-hidden="true"></i>
-          <p className="name">{conversions.find((c, i) => i === active).name}</p>
-          <i className="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>
+  const AuthDiv = <>
+    <section className="discussions">
+      <div className="discussion search">
+        <div className="searchbar">
+          <i className="fa fa-search" aria-hidden="true"></i>
+          <input type="text" placeholder="Search..."></input>
         </div>
-        <div className="messages-chat">
-          <div className="message">
-            <div className="photo" style={{ backgroundImage: "url(" + conversions.find((c, i) => i === active).photo + ")" }}>
-              <div className="online"></div>
+      </div>
+      {
+        conversions.map((c, i) =>
+          <div onClick={() => setActive(i)} key={i} className={`discussion ${i === active ? 'message-active' : ''}`}>
+            <div className="photo" style={{ backgroundImage: "url(" + c.photo + ")" }}>
+              {c.online && <div className="online"></div>}
             </div>
-            <p className="text"> Hi, how are you ? </p>
-          </div>
-          <div className="message text-only">
-            <p className="text"> What are you doing tonight ? Want to go take a drink ?</p>
-          </div>
-          <p className="time"> 14h58</p>
-          <div className="message text-only">
-            <div className="response">
-              <p className="text"> Hey Megan ! It&apos;s been a while 😃</p>
+            <div className="desc-contact">
+              <p className="name">{c.name}</p>
+              <p className="message">{c.message}</p>
             </div>
+            <div className="timer">{c.timer}</div>
           </div>
-          <div className="message text-only">
-            <div className="response">
-              <p className="text"> When can we meet ?</p>
-            </div>
+        )
+      }
+
+    </section>
+    <section className="chat">
+      <div className="header-chat">
+        <i className="icon fa fa-user-o" aria-hidden="true"></i>
+        <p className="name">{conversions.find((c, i) => i === active).name}</p>
+        <i className="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>
+      </div>
+      <div className="messages-chat">
+        <div className="message">
+          <div className="photo" style={{ backgroundImage: "url(" + conversions.find((c, i) => i === active).photo + ")" }}>
+            <div className="online"></div>
           </div>
-          <p className="response-time time"> 15h04</p>
-          <div className="message">
-            <div className="photo" style={{ backgroundImage: "url(" + conversions.find((c, i) => i === active).photo + ")" }}>
-              <div className="online"></div>
-            </div>
-            <p className="text"> 9 pm at the bar if possible 😳</p>
-          </div>
-          <p className="time"> 15h09</p>
+          <p className="text"> Hi, how are you ? </p>
         </div>
-        <div className="footer-chat">
-          <i className="icon fa fa-smile-o clickable" style={{ fontSize: "25pt" }} aria-hidden="true"></i>
-          <input type="text" className="write-message" placeholder="Type your message here"></input>
-          <i className="icon send fa fa-paper-plane-o clickable" aria-hidden="true"></i>
+        <div className="message text-only">
+          <p className="text"> What are you doing tonight ? Want to go take a drink ?</p>
         </div>
-      </section>
-    </div>
-  </div>
-  console.log(auth);
+        <p className="time"> 14h58</p>
+        <div className="message text-only">
+          <div className="response">
+            <p className="text"> Hey Megan ! It&apos;s been a while 😃</p>
+          </div>
+        </div>
+        <div className="message text-only">
+          <div className="response">
+            <p className="text"> When can we meet ?</p>
+          </div>
+        </div>
+        <p className="response-time time"> 15h04</p>
+        <div className="message">
+          <div className="photo" style={{ backgroundImage: "url(" + conversions.find((c, i) => i === active).photo + ")" }}>
+            <div className="online"></div>
+          </div>
+          <p className="text"> 9 pm at the bar if possible 😳</p>
+        </div>
+        <p className="time"> 15h09</p>
+      </div>
+      <div className="footer-chat">
+        <i className="icon fa fa-smile-o clickable" style={{ fontSize: "25pt" }} aria-hidden="true"></i>
+        <input type="text" className="write-message" placeholder="Type your message here"></input>
+        <i className="icon send fa fa-paper-plane-o clickable" aria-hidden="true"></i>
+      </div>
+    </section>
+  </>
+  {/* </div> */ }
+  {/* </div> */ }
+  // console.log(auth);
   return (
     isAuth ? AuthDiv : <div className={styles.cover}>
       <h1 id={styles.h1}>Welcome to our Communication Website</h1>
@@ -193,5 +183,3 @@ export async function getServerSideProps({ req, res, params, query }) {
     },
   }
 }
-
-// export default (Home);

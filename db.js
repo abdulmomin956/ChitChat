@@ -77,7 +77,7 @@ const UserSchema = new Schema({
     username: { type: String, unique: [true, "username is already exists in database!"] },
     password: { type: String },
     role: { type: String },
-    // courses: { type: [Object], default: [] }
+    friends: { type: [Object], default: [] }
 })
 
 export const UserModel = mongoose.models.User || mongoose.model('User', UserSchema)

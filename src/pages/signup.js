@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function SignUpPage() {
@@ -10,6 +11,7 @@ export default function SignUpPage() {
     const [password, setPassword] = useState('');
     const [sucmessage, setSucMessage] = useState('')
     const [errMessage, setErrMessage] = useState('')
+    const router = useRouter()
 
     const handleSignup = async () => {
         if (!name || !username || !password) {

@@ -34,6 +34,7 @@ export default async function handler(req, res) {
 
         // Event handler for client connections
         io.on("connection", (socket) => {
+            console.log('object', socket.id, socket.handshake.query.username, socket.handshake.query.name);
             let isBusy = false;
 
             if (!_.includes(users, socket.id)) {
