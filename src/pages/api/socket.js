@@ -1,5 +1,7 @@
 import { Server } from "socket.io";
 import cors from 'cors';
+import dbConnect, { UserModel } from "../../../db";
+import mongoose from "mongoose";
 const _ = require("lodash");
 
 // Create a new instance of the CORS middleware
@@ -32,14 +34,28 @@ export default async function handler(req, res) {
         let users = [];
         let queue = [];
 
+        const addUser = (id, socketId) => {
+            const user = users.filter(u => u.id === id)
+            if (user.length > 0) {
+                user[0].socketId = socketId
+            } else {
+                users.push({ id, socketId });
+            }
+        };
+
         // Event handler for client connections
         io.on("connection", (socket) => {
-            console.log('object', socket.id, socket.handshake.query.username, socket.handshake.query.name);
+            console.log('object', socket.id, socket.handshake.query.username, socket.handshake.query.id);
             let isBusy = false;
 
             if (!_.includes(users, socket.id)) {
                 users.push(socket.id);
             }
+
+            if (socket.handshake.query.email) {
+                addUser(socket.handshake.query.id, socket.id)
+            }
+
             socket.emit("yourID", socket.id);
             // console.log(users);
             io.sockets.emit("allUsers", users);
@@ -63,6 +79,37 @@ export default async function handler(req, res) {
                     _.remove(queue, { id: userInQueue.id });
                 }
             });
+
+            socket.on("sendrequest", async ({ myId, otherId }) => {
+                // console.log(myId, otherId);
+                try {
+                    dbConnect()
+                    const thisUser = await UserModel.findOne({ _id: new mongoose.Types.ObjectId(myId) })
+                    thisUser.friends.push({ id: otherId, type: 'ask' })
+                    await thisUser.save()
+                    const otherUser = await UserModel.findOne({ _id: new mongoose.Types.ObjectId(otherId) })
+                    otherUser.friends.push({ id: myId, type: 'req' })
+                    await otherUser.save()
+                } catch (err) {
+                    console.log(err.message);
+                }
+            })
+
+            socket.on("acceptrequest", async ({ myId, otherId }) => {
+                try {
+                    await dbConnect()
+                    const thisUser = await UserModel.findOne({ _id: new mongoose.Types.ObjectId(myId) })
+                    thisUser.friends[thisUser.friends.indexOf(thisUser.friends.find(f => f.id === otherId))].type = 'friend'
+                    thisUser.markModified('friends')
+                    await thisUser.save()
+                    const otherUser = await UserModel.findOne({ _id: new mongoose.Types.ObjectId(otherId) })
+                    otherUser.friends[otherUser.friends.indexOf(otherUser.friends.find(f => f.id === myId))].type = 'friend'
+                    otherUser.markModified('friends')
+                    await otherUser.save()
+                } catch (err) {
+                    console.log(err.message);
+                }
+            })
 
             socket.on("sendMessage", (data) => {
                 socket.emit("messageSent", {

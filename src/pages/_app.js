@@ -4,9 +4,10 @@ import "@/styles/globals.css";
 import Layout from '../../Components/layout';
 
 export default function App({ Component, pageProps }) {
-  return (
+  return (pageProps.isAuth ?
     <Layout>
       <Component {...pageProps} />
-    </Layout>
+    </Layout> :
+    <Component {...pageProps} />
   )
 }

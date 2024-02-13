@@ -1,4 +1,6 @@
 import { useState } from "react"
+import { returnUsername, verifyJWT } from "@/utils/verifyJWT";
+import dbConnect, { UserModel } from "../../../db";
 
 export default function Message() {
     const [active, setActive] = useState(0)
@@ -123,4 +125,30 @@ export default function Message() {
             </section>
         </>
     )
+}
+
+export async function getServerSideProps({ req, res, params, query }) {
+    await dbConnect();
+    const { token } = await req.cookies;
+    const verified = verifyJWT(token);
+
+    if (!verified) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: true,
+            },
+        };
+    }
+
+    const username = returnUsername(token)
+    const user = await UserModel.findOne({ username }).select({ name: 1, username: 1, friends: 1 })
+    const data = await JSON.parse(JSON.stringify(user));
+    const usersRes = await UserModel.find().select({ name: 1, username: 1 })
+    const users = await JSON.parse(JSON.stringify(usersRes))
+    return {
+        props: {
+            isAuth: true, auth: data, users
+        },
+    }
 }

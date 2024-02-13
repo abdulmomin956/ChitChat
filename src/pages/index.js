@@ -15,13 +15,15 @@ const Home = ({ isAuth, auth }) => {
   const [active, setActive] = useState(0)
 
   useEffect(() => {
-    socket.current = io('/', {
-      path: '/api/socket',
-      query: `username=${auth.username}&name=${auth.name}`
-    })
-  }, [auth.name, auth.username])
+    if (auth?._id && auth?.username) {
+      socket.current = io('/', {
+        path: '/api/socket',
+        query: `username=${auth.username}&id=${auth._id}`
+      })
+    }
+  }, [auth?._id, auth?.username])
 
-  console.log(auth);
+  // console.log(auth);
 
   const conversions = [
     {
