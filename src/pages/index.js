@@ -82,73 +82,9 @@ const Home = ({ isAuth, auth }) => {
   {/* <div className="row"> */ }
 
 
-  const AuthDiv = <>
-    <section className="discussions">
-      <div className="discussion search">
-        <div className="searchbar">
-          <i className="fa fa-search" aria-hidden="true"></i>
-          <input type="text" placeholder="Search..."></input>
-        </div>
-      </div>
-      {
-        conversions.map((c, i) =>
-          <div onClick={() => setActive(i)} key={i} className={`discussion ${i === active ? 'message-active' : ''}`}>
-            <div className="photo" style={{ backgroundImage: "url(" + c.photo + ")" }}>
-              {c.online && <div className="online"></div>}
-            </div>
-            <div className="desc-contact">
-              <p className="name">{c.name}</p>
-              <p className="message">{c.message}</p>
-            </div>
-            <div className="timer">{c.timer}</div>
-          </div>
-        )
-      }
-
-    </section>
-    <section className="chat">
-      <div className="header-chat">
-        <i className="icon fa fa-user-o" aria-hidden="true"></i>
-        <p className="name">{conversions.find((c, i) => i === active).name}</p>
-        <i className="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>
-      </div>
-      <div className="messages-chat">
-        <div className="message">
-          <div className="photo" style={{ backgroundImage: "url(" + conversions.find((c, i) => i === active).photo + ")" }}>
-            <div className="online"></div>
-          </div>
-          <p className="text"> Hi, how are you ? </p>
-        </div>
-        <div className="message text-only">
-          <p className="text"> What are you doing tonight ? Want to go take a drink ?</p>
-        </div>
-        <p className="time"> 14h58</p>
-        <div className="message text-only">
-          <div className="response">
-            <p className="text"> Hey Megan ! It&apos;s been a while 😃</p>
-          </div>
-        </div>
-        <div className="message text-only">
-          <div className="response">
-            <p className="text"> When can we meet ?</p>
-          </div>
-        </div>
-        <p className="response-time time"> 15h04</p>
-        <div className="message">
-          <div className="photo" style={{ backgroundImage: "url(" + conversions.find((c, i) => i === active).photo + ")" }}>
-            <div className="online"></div>
-          </div>
-          <p className="text"> 9 pm at the bar if possible 😳</p>
-        </div>
-        <p className="time"> 15h09</p>
-      </div>
-      <div className="footer-chat">
-        <i className="icon fa fa-smile-o clickable" style={{ fontSize: "25pt" }} aria-hidden="true"></i>
-        <input type="text" className="write-message" placeholder="Type your message here"></input>
-        <i className="icon send fa fa-paper-plane-o clickable" aria-hidden="true"></i>
-      </div>
-    </section>
-  </>
+  const AuthDiv = <section className="w-75">
+    <h1>Browse the website</h1>
+  </section>
   {/* </div> */ }
   {/* </div> */ }
   // console.log(auth);
