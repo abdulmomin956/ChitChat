@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { returnUsername, verifyJWT } from "@/utils/verifyJWT";
 import dbConnect, { UserModel } from "../../../db";
+import Chat from "../../../Components/Chat/Chat";
 
 export default function Message() {
     const [active, setActive] = useState(0)
@@ -81,48 +82,7 @@ export default function Message() {
                 }
 
             </section>
-            <section className="chat">
-                <div className="header-chat">
-                    <i className="icon fa fa-user-o" aria-hidden="true"></i>
-                    <p className="name">{conversions.find((c, i) => i === active).name}</p>
-                    <i className="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>
-                </div>
-                <div className="messages-chat">
-                    <div className="message">
-                        <div className="photo" style={{ backgroundImage: "url(" + conversions.find((c, i) => i === active).photo + ")" }}>
-                            <div className="online"></div>
-                        </div>
-                        <p className="text"> Hi, how are you ? </p>
-                    </div>
-                    <div className="message text-only">
-                        <p className="text"> What are you doing tonight ? Want to go take a drink ?</p>
-                    </div>
-                    <p className="time"> 14h58</p>
-                    <div className="message text-only">
-                        <div className="response">
-                            <p className="text"> Hey Megan ! It&apos;s been a while 😃</p>
-                        </div>
-                    </div>
-                    <div className="message text-only">
-                        <div className="response">
-                            <p className="text"> When can we meet ?</p>
-                        </div>
-                    </div>
-                    <p className="response-time time"> 15h04</p>
-                    <div className="message">
-                        <div className="photo" style={{ backgroundImage: "url(" + conversions.find((c, i) => i === active).photo + ")" }}>
-                            <div className="online"></div>
-                        </div>
-                        <p className="text"> 9 pm at the bar if possible 😳</p>
-                    </div>
-                    <p className="time"> 15h09</p>
-                </div>
-                <div className="footer-chat">
-                    <i className="icon fa fa-smile-o clickable" style={{ fontSize: "25pt" }} aria-hidden="true"></i>
-                    <input type="text" className="write-message" placeholder="Type your message here"></input>
-                    <i className="icon send fa fa-paper-plane-o clickable" aria-hidden="true"></i>
-                </div>
-            </section>
+            {/* <Chat conversions={conversions} active={active}></Chat> */}
         </>
     )
 }
@@ -147,8 +107,9 @@ export async function getServerSideProps({ req, res, params, query }) {
     const usersRes = await UserModel.find().select({ name: 1, username: 1 })
     const users = await JSON.parse(JSON.stringify(usersRes))
     return {
-        props: {
-            isAuth: true, auth: data, users
+        redirect: {
+            destination: '/message/1',
+            permanent: false,
         },
     }
 }

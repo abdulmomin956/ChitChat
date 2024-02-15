@@ -48,11 +48,11 @@ export default async function handler(req, res) {
             console.log('object', socket.id, socket.handshake.query.username, socket.handshake.query.id);
             let isBusy = false;
 
-            if (!_.includes(users, socket.id)) {
-                users.push(socket.id);
-            }
+            // if (!_.includes(users, socket.id)) {
+            //     users.push(socket.id);
+            // }
 
-            if (socket.handshake.query.email) {
+            if (socket.handshake.query.id) {
                 addUser(socket.handshake.query.id, socket.id)
             }
 
@@ -60,16 +60,16 @@ export default async function handler(req, res) {
             // console.log(users);
             io.sockets.emit("allUsers", users);
 
-            socket.on("disconnect", () => {
-                _.pull(users, socket.id);
+            // socket.on("disconnect", () => {
+            //     _.pull(users, socket.id);
 
-                const userInQueue = _.find(queue, u => u.id === socket.id);
+            //     const userInQueue = _.find(queue, u => u.id === socket.id);
 
-                if (userInQueue) {
-                    _.remove(queue, { id: userInQueue.id });
-                    isBusy = false;
-                }
-            });
+            //     if (userInQueue) {
+            //         _.remove(queue, { id: userInQueue.id });
+            //         isBusy = false;
+            //     }
+            // });
 
             socket.on("leaveQueue", () => {
                 const userInQueue = _.find(queue, u => u.id === socket.id);
@@ -110,6 +110,35 @@ export default async function handler(req, res) {
                     console.log(err.message);
                 }
             })
+
+            socket.on("room:join", (data) => {
+                const { email, room } = data;
+                emailToSocketIdMap.set(email, socket.id);
+                socketidToEmailMap.set(socket.id, email);
+                io.to(room).emit("user:joined", { email, id: socket.id });
+                socket.join(room);
+                io.to(socket.id).emit("room:join", data);
+            });
+
+            socket.on("user:call", ({ to, offer }) => {
+                console.log(users, to);
+                // console.log("incomming:call", offer);
+                io.to(users.find(u => u.id === to).socketId).emit("incomming:call", { from: socket.id, offer });
+            });
+
+            socket.on("call:accepted", ({ to, ans }) => {
+                io.to(to).emit("call:accepted", { from: socket.id, ans });
+            });
+
+            socket.on("peer:nego:needed", ({ to, offer }) => {
+                // console.log("peer:nego:needed", offer);
+                io.to(to).emit("peer:nego:needed", { from: socket.id, offer });
+            });
+
+            socket.on("peer:nego:done", ({ to, ans }) => {
+                // console.log("peer:nego:done", ans);
+                io.to(to).emit("peer:nego:final", { from: socket.id, ans });
+            });
 
             socket.on("sendMessage", (data) => {
                 socket.emit("messageSent", {

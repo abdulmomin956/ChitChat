@@ -12,7 +12,6 @@ import { io } from "socket.io-client";
 const Home = ({ isAuth, auth }) => {
   const socket = useRef()
   const router = useRouter()
-  const [active, setActive] = useState(0)
 
   useEffect(() => {
     if (auth?._id && auth?.username) {
