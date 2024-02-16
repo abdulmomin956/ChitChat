@@ -1,6 +1,5 @@
 // pages/index.js
 import Image from "next/image";
-import WebRTC from "../../WebRTC";
 import styles from '../styles/Index.module.css'
 import { useRouter } from "next/router";
 import dbConnect, { UserModel } from "../../db";
