@@ -83,18 +83,17 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
       # - name: Static HTML export with Next.js
         # run: ${{ steps.detect-package-manager.outputs.runner }} next export
-      - run: mkdir -p path/to/artifact
+      - run: mkdir -p ./out
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          name: my-artifact
-          path: path/to/artifact/
+          path: ./out
           if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
 
   # Deployment job
   deploy:
     environment:
-      name: my-artifact
+      name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
