@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    urlImports: ['https://fonts.googleapis.com/css?family=Montserrat'],
+  images: {
+    loader: 'akamai',
+    path: '',
   },
-  reactStrictMode: true,
+  assetPrefix: './',
 };
 
 export default nextConfig;
