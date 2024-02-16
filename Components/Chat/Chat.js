@@ -78,13 +78,14 @@ const Chat = ({ conversions, active, socket }) => {
         socket?.current?.on("call:accepted", handleCallAccepted);
         socket?.current?.on("peer:nego:needed", handleNegoNeedIncomming);
         socket?.current?.on("peer:nego:final", handleNegoNeedFinal);
+        const socketCrr = socket?.current
 
         return () => {
-            socket.current.off("user:joined", handleUserJoined);
-            socket.current.off("incomming:call", handleIncommingCall);
-            socket.current.off("call:accepted", handleCallAccepted);
-            socket.current.off("peer:nego:needed", handleNegoNeedIncomming);
-            socket.current.off("peer:nego:final", handleNegoNeedFinal);
+            socketCrr.off("user:joined", handleUserJoined);
+            socketCrr.off("incomming:call", handleIncommingCall);
+            socketCrr.off("call:accepted", handleCallAccepted);
+            socketCrr.off("peer:nego:needed", handleNegoNeedIncomming);
+            socketCrr.off("peer:nego:final", handleNegoNeedFinal);
         };
     }, [
         socket,

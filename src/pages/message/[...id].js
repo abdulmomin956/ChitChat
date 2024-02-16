@@ -84,7 +84,7 @@ export default function SinglePersonMsg({ auth, users }) {
         auth.friends.filter(f => f.type === "friend").map(f =>
             setConversions([{ id: f.id, name: users.find(u => u._id === f.id).name, message: "new message" }, ...conversions])
         )
-    }, [auth.friends])
+    }, [auth.friends, conversions, users])
 
     // console.log(conversions);
     return (
