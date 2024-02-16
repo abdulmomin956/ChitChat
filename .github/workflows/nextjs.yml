@@ -103,9 +103,8 @@ jobs:
         uses: actions/download-pages-artifact@v3
         with:
           name: my-artifact
+          path: path/to/artifact/
       
-      - name: unzip artifact for deployment
-        run: unzip release
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
