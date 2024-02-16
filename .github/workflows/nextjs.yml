@@ -87,7 +87,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           name: node-app
-          path: release.tar
+          path: release
 
   # Deployment job
   deploy:
@@ -103,7 +103,7 @@ jobs:
           name: node-app
       
       - name: unzip artifact for deployment
-        run: unzip release.tar
+        run: unzip release
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
