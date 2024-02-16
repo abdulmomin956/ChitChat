@@ -86,7 +86,9 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out
+          name: my-artifact
+          path: path/to/artifact/
+          if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
 
   # Deployment job
   deploy:
