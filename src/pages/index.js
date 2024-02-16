@@ -17,6 +17,7 @@ const Home = ({ isAuth, auth }) => {
     if (auth?._id && auth?.username) {
       socket.current = io('/', {
         path: '/api/socket',
+        transports: ['websocket'],
         query: `username=${auth.username}&id=${auth._id}`
       })
     }
