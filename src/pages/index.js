@@ -36,72 +36,19 @@ const Home = ({ isAuth, auth }) => {
 
   // console.log(auth);
 
-  const conversions = [
-    {
-      photo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-      name: "Megan Leib",
-      message: '9 pm at the bar if possible 😳',
-      timer: '12 sec',
-      online: true
-    },
-    {
-      photo: "https://i.pinimg.com/originals/a9/26/52/a926525d966c9479c18d3b4f8e64b434.jpg",
-      name: "Dave Corlew",
-      message: "Let's meet for a coffee or something today ?",
-      timer: '3 min',
-      online: true
-    },
-    {
-      photo: "https://images.unsplash.com/photo-1497551060073-4c5ab6435f12?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=667&q=80",
-      name: "Jerome Seiber",
-      message: "I&apos;ve sent you the annual report",
-      timer: '42 min',
-      online: false
-    },
-    {
-      photo: "https://card.thomasdaubenton.com/img/photo.jpg",
-      name: "Thomas Dbtn",
-      message: 'See you tomorrow ! 🙂',
-      timer: '2 hour',
-      online: true
-    },
-    {
-      photo: "https://images.unsplash.com/photo-1553514029-1318c9127859?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80",
-      name: "Elsie Amador",
-      message: 'What the f**k is going on ?',
-      timer: '1 day',
-      online: false
-    },
-    {
-      photo: "https://images.unsplash.com/photo-1541747157478-3222166cf342?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=967&q=80",
-      name: "Billy Southard",
-      message: 'Ahahah 😂',
-      timer: '4 days',
-      online: false
-    },
-    {
-      photo: "https://images.unsplash.com/photo-1435348773030-a1d74f568bc2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80",
-      name: "Paul Walker",
-      message: "You can&apos;t see me",
-      timer: '1 week',
-      online: true
-    }
-
-  ]
-
   // const AuthDiv = <div className="container">
   {/* <div className="row"> */ }
 
 
   const AuthDiv = <section className="w-75">
-    <h1>Browse the website</h1>
+    <h1>Browse the website 0.1.1</h1>
   </section>
   {/* </div> */ }
   {/* </div> */ }
   // console.log(auth);
   return (
     isAuth ? AuthDiv : <div className={styles.cover}>
-      <h1 id={styles.h1}>Welcome to our Communication Website</h1>
+      <h1 id={styles.h1}>Welcome to our Communication Website 0.1.1</h1>
       <button onClick={() => { router.push('/login') }} id={styles.loginBtn}>Login</button>
     </div>
 

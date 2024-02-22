@@ -73,20 +73,22 @@ const Chat = ({ conversions, active, socket }) => {
     }, []);
 
     useEffect(() => {
-        socket?.current?.on("user:joined", handleUserJoined);
-        socket?.current?.on("incomming:call", handleIncommingCall);
-        socket?.current?.on("call:accepted", handleCallAccepted);
-        socket?.current?.on("peer:nego:needed", handleNegoNeedIncomming);
-        socket?.current?.on("peer:nego:final", handleNegoNeedFinal);
-        const socketCrr = socket?.current
+        if (socket && socket?.current?.connected) {
+            socket?.current?.on("user:joined", handleUserJoined);
+            socket?.current?.on("incomming:call", handleIncommingCall);
+            socket?.current?.on("call:accepted", handleCallAccepted);
+            socket?.current?.on("peer:nego:needed", handleNegoNeedIncomming);
+            socket?.current?.on("peer:nego:final", handleNegoNeedFinal);
+            const socketCrr = socket?.current
 
-        return () => {
-            socketCrr.off("user:joined", handleUserJoined);
-            socketCrr.off("incomming:call", handleIncommingCall);
-            socketCrr.off("call:accepted", handleCallAccepted);
-            socketCrr.off("peer:nego:needed", handleNegoNeedIncomming);
-            socketCrr.off("peer:nego:final", handleNegoNeedFinal);
-        };
+            return () => {
+                socketCrr.off("user:joined", handleUserJoined);
+                socketCrr.off("incomming:call", handleIncommingCall);
+                socketCrr.off("call:accepted", handleCallAccepted);
+                socketCrr.off("peer:nego:needed", handleNegoNeedIncomming);
+                socketCrr.off("peer:nego:final", handleNegoNeedFinal);
+            };
+        }
     }, [
         socket,
         handleUserJoined,

@@ -82,11 +82,11 @@ export default function SinglePersonMsg({ auth, users }) {
 
     useEffect(() => {
         auth.friends.filter(f => f.type === "friend").map(f =>
-            setConversions([{ id: f.id, name: users.find(u => u._id === f.id).name, message: "new message" }, ...conversions])
+            setConversions(prev => [{ id: f.id, name: users.find(u => u._id === f.id).name, message: "new message" }, ...prev])
         )
-    }, [auth.friends, conversions, users])
+    }, [auth.friends, users])
 
-    // console.log(conversions);
+    // console.log(conversions, auth);
     return (
         <>
             <section className="discussions">
